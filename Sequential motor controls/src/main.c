@@ -1,5 +1,5 @@
 /* ------------------------------------------
-       Motor Demo
+     Motor Demo
 	 Show green	 
 	 When button pressed, run motor slowly clockwise; show red
    Stop on button press
@@ -23,8 +23,9 @@
 #include "../include/gpio_defs.h"
 #include "../include/stepperMotor.h"
 #include "../include/SysTick.h"
-#include "../include/pit.h"
 #include <stdbool.h>
+
+#include "../include/pit.h"
 
 #define STATESTART (0)
 #define STATERUNNING (1)
@@ -34,7 +35,7 @@
 #define BUTTONOPEN (0)
 #define BUTTONCLOSED (1)
 #define BUTTONBOUNCE (2)
-bool motorRunning = false ;
+
 /*----------------------------------------------------------------------------
   GPIO Configuration
 
@@ -74,10 +75,13 @@ void configureGPIOinput(void) {
 
 	/* Select GPIO and enable pull-up resistors and no interrupts */
 	PORTD->PCR[BUTTON_POS] |= PORT_PCR_MUX(1) | PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_IRQC(0x0);
-	PORTD->PCR[BUTTON_POS_2] |= PORT_PCR_MUX(1) | PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_IRQC(0x0);	
+	
+	//usert-defined: for the external button
+	PORTD->PCR[EXTRA_BUTTON_POS] |= PORT_PCR_MUX(1) | PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_IRQC(0x0);
+	
 	/* Set port D switch bit to inputs */
 	PTD->PDDR &= ~MASK(BUTTON_POS);
-	PTD->PDDR &= ~MASK(BUTTON_POS_2);
+	PTD->PDDR &= ~MASK(EXTRA_BUTTON_POS);	//user-defined: for the external button
 }
 
 /*----------------------------------------------------------------------------
@@ -86,6 +90,7 @@ void configureGPIOinput(void) {
  *----------------------------------------------------------------------------*/
 motorType mcb ;   // motor control block
 MotorId m1 ;      // motor id
+
 void configureMotor() {
 	m1 = & mcb ;
 	m1->port = PTE ;
@@ -138,8 +143,9 @@ bool isPressed(void) {
 	return true ;
 }
 
-bool isPressed_2(void) {
-	if (PTD->PDIR & MASK(BUTTON_POS_2)) {
+// user-defined: Detect external button press
+bool isPressed_extraButton_2(void) {
+	if (PTD->PDIR & MASK(EXTRA_BUTTON_POS)) {
 			return false ;
 	}
 	return true ;
@@ -154,38 +160,41 @@ bool isPressed_2(void) {
 *----------------------------------------------------------------------------*/
 int b_state = BUTTONOPEN ;
 int pressed = 0 ;
-int pressed_2 = 0;
-int bounceCounter = 0 ;
-int mov_state = 0;
+int bounceCounter = 0;
+
+int button2_pressed = 0;
+int position = 0;
+bool motor_running = false;
+
 void task1PollInput(void)
 {
 	if (bounceCounter > 0) bounceCounter -- ;
 	
 	switch (b_state) {
 		case BUTTONOPEN :
-			if (isPressed() && !motorRunning) {
+			if (isPressed() && !motor_running) {
 				pressed = 1 ;  // create a 'pressed' event
 				b_state = BUTTONCLOSED ;
-				if (mov_state > 7)
+				if (position > 7)
 				{
-					mov_state = 0;
+					position = 0;
 				}
 			}
-			else if (isPressed_2())
+			else if (isPressed_extraButton_2())
 			{
-				pressed_2 = 1;
+				button2_pressed = 1;
 				b_state = BUTTONCLOSED ;
 			}
 			
 			break ;
 		case BUTTONCLOSED :
-			if (!isPressed() || !isPressed_2()) {
+			if (!isPressed() || !isPressed_extraButton_2()) {
 				b_state = BUTTONBOUNCE ;
 				bounceCounter = 50 ;
 			}
 			break ;
 		case BUTTONBOUNCE :
-			if (isPressed() || isPressed_2()) {
+			if (isPressed() || isPressed_extraButton_2()) {
 				b_state = BUTTONCLOSED ;
 			}
 			if (bounceCounter == 0) {
@@ -194,6 +203,8 @@ void task1PollInput(void)
 			break ;
 	}
 }
+
+
 
 /*-----------------------------------------------------------------
   task 2 - control the LEDs
@@ -205,24 +216,25 @@ void task1PollInput(void)
   stopped    red
   return     none
  *------------------------------------------------------------------ */
-int sys_state = STATESTART ;
+
+int sys_state = STATESTART;
 
 void task2ControlLight(void)
 {
 	switch (sys_state) {
-    case STATESTART :
-  		ledOn(GREEN_LED_POS) ;
-	  	ledOff(RED_LED_POS) ;
-		  break ;
-	  case STATERUNNING:
-    case STATESTOPPED:
-  		ledOn(RED_LED_POS) ;
-	  	ledOff(GREEN_LED_POS) ;
-		  break ;
-    case STATERETURN :
-  		ledOff(RED_LED_POS) ;
-	  	ledOff(GREEN_LED_POS) ;
-		  break;
+		case STATESTART :
+  			ledOn(GREEN_LED_POS) ;
+	  		ledOff(RED_LED_POS) ;
+			  break ;
+		  case STATERUNNING:
+		case STATESTOPPED:
+  			ledOn(RED_LED_POS) ;
+	  		ledOff(GREEN_LED_POS) ;
+			  break ;
+		case STATERETURN :
+  			ledOff(RED_LED_POS) ;
+	  		ledOff(GREEN_LED_POS) ;
+			  break;
 	}
 }
 
@@ -243,34 +255,35 @@ void task2ControlLight(void)
 
 int counter = 0;
 int delay = 0;
+
 int mov_arr[8] = {64, 272, 480, 976, 512, 960, 1456, 1952};
 int mov_rot[8] = {0, 0, 1, 1, 1, 1, 0, 0};
 int mov_time[8] = {3276562, 770955, 436874, 214856, 204784, 109218, 72011, 53713};
-//int mov_rot[8] = {1, 1, 1, 1, 1, 1, 1, 1};
 int mov_flag;
 volatile int steps_calc ;
 volatile int steps_counter = 0; 
 int reset_flag = false;
 
+
 void task3ControlMotor(void)
 { 
 	switch (sys_state) {
     case STATESTART :
-			if (pressed && !motorRunning) {
+			if (pressed && !motor_running) {
 				pressed = false ; // acknowledge
-				moveSteps(m1, mov_arr[mov_state], mov_rot[mov_state]) ; // set number of steps, set direction of turn
-				setTimer(0, mov_time[mov_state]) ; //set timing period for move
-				mov_state++;
+				moveSteps(m1, mov_arr[position], mov_rot[position]) ; // set number of steps, set direction of turn
+				setTimer(0, mov_time[position]) ; //set timing period for move
+				position++;
 				mov_flag = 1; //sets if motor has made a move
-				pressed_2 = false; //if restart button pressed before start button, then reset state.
+				button2_pressed = false; //if restart button pressed before start button, then reset state.
 				
 			}
-			else if (pressed_2 && motorRunning)//stop motor if running and restart button is pressed
+			else if (button2_pressed && motor_running)//stop motor if running and restart button is pressed
 			{
 				stopMotor(m1) ;
-				pressed_2 = false;
+				button2_pressed = false;
 			}
-			else if(pressed_2 && !motorRunning && mov_flag)//if the motor has stopped moving and the restart button is pressed, restart motor to start position
+			else if(button2_pressed && !motor_running && mov_flag)//if the motor has stopped moving and the restart button is pressed, restart motor to start position
 			{
 					sys_state = STATERUNNING ;
 			}
@@ -278,41 +291,41 @@ void task3ControlMotor(void)
 		  break ;
 			
 	  case STATERUNNING:			
-				if (pressed_2)
+				if (button2_pressed)
 				{
 					steps_calc = steps_counter;
 					steps_calc = steps_counter % 48;
 					if (steps_calc > 24 )
 					{
 						steps_calc = 48-steps_calc;
-						if (mov_rot[mov_state - 1] == true)	//check to see if it goes counter clockwise. Reverse conditions for this.
+						if (mov_rot[position - 1] == true)	//check to see if it goes counter clockwise. Reverse conditions for this.
 						{
-							moveSteps(m1, steps_calc, true /*mov_rot[mov_state]*/) ; 
+							moveSteps(m1, steps_calc, true /*mov_rot[position]*/) ; 
 						}
 						else
 						{
-							moveSteps(m1, steps_calc, false /*mov_rot[mov_state]*/) ; 
+							moveSteps(m1, steps_calc, false /*mov_rot[position]*/) ; 
 						}
 						reset_flag = true;
 					}
 				
 					else
 					{
-						if (mov_rot[mov_state - 1] == true)
+						if (mov_rot[position - 1] == true)
 						{
-							moveSteps(m1, steps_calc, false /*mov_rot[mov_state]*/) ; 
+							moveSteps(m1, steps_calc, false /*mov_rot[position]*/) ; 
 						}
 						else
 						{
-							moveSteps(m1, steps_calc, true /*!mov_rot[mov_state]*/) ; 
+							moveSteps(m1, steps_calc, true /*!mov_rot[position]*/) ; 
 						}
 						reset_flag = true;
 					}
 				}
-				if (!motorRunning)
+				if (!motor_running)
 				{
 					sys_state = STATESTART ;
-					pressed_2 = false ; // acknowledge
+					button2_pressed = false ; // acknowledge
 					mov_flag = 0;
 				}
 		  break;
@@ -326,11 +339,11 @@ void task3ControlMotor(void)
    -------------------------------------- */
 
 void task4UpdateMotor() {
-	if (motorRunning && mov_flag)
+	if (motor_running && mov_flag)
 	{
 		steps_counter++;
 	}
-	if (!motorRunning && reset_flag)
+	if (!motor_running && reset_flag)
 	{
 		steps_counter = 0;
 		reset_flag = false;
@@ -338,7 +351,7 @@ void task4UpdateMotor() {
 	if (counter == 0) {
 		counter = delay ;
 		updateMotor(m1) ;
-		motorRunning = isMoving(m1) ;
+		motor_running = isMoving(m1) ;
 	} else {
 		if (counter > 0) counter-- ;
 	}
@@ -354,7 +367,7 @@ int main (void) {
 	configureGPIOinput() ;
 	configureMotor() ;
 	Init_SysTick(1000) ; // SysTick every ms
-  waitSysTickCounter(5) ; // initialise counter
+	waitSysTickCounter(5) ; // initialise counter
 	
 	configurePIT(0) ;            // Configure PIT channel 0
 	setTimer(0, 200000) ;	
@@ -364,7 +377,6 @@ int main (void) {
 		task1PollInput() ;
 		task2ControlLight() ;
 		task3ControlMotor() ;
-		//task4UpdateMotor() ;
 		
 		waitSysTickCounter(5); // initialise counter
 	}

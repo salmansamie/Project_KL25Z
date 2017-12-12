@@ -65,18 +65,13 @@ void PIT_IRQHandler(void) {
 	if (PIT->CHANNEL[0].TFLG & PIT_TFLG_TIF_MASK) {
 		// clear TIF
 		PIT->CHANNEL[0].TFLG = PIT_TFLG_TIF_MASK ;
-		// add code here for channel 0 interrupt
-		// -- start of demo code
-		// Toggle the tone pos
 		task4UpdateMotor();
-		// -- end of demo code
+
+
 	}
 
 	if (PIT->CHANNEL[1].TFLG & PIT_TFLG_TIF_MASK) {
 		// clear TIF
 		PIT->CHANNEL[1].TFLG = PIT_TFLG_TIF_MASK ;
-
-		// add code here for channel 1 interrupt
-		// -- end of demo code
 	}
 }
