@@ -256,14 +256,25 @@ void task2ControlLight(void)
 int counter = 0;
 int delay = 0;
 
+<<<<<<< HEAD
+
+=======
 int mov_arr[8] = {64, 272, 480, 976, 512, 960, 1456, 1952};
 int mov_rot[8] = {0, 0, 1, 1, 1, 1, 0, 0};
 int mov_time[8] = {3276562, 770955, 436874, 214856, 204784, 109218, 72011, 53713};
 int mov_flag;
+>>>>>>> 46990545948d2797b5fd02fe7272f93861e28e6b
 volatile int steps_calc ;
 volatile int steps_counter = 0; 
 int reset_flag = false;
 
+<<<<<<< HEAD
+int mov_arr[8] = { 64, 272, 480, 976, 512, 960, 1456, 1952 };
+int mov_rot[8] = { 0, 0, 1, 1, 1, 1, 0, 0 };
+int mov_time[8] = { 3276562, 770955, 436874, 214856, 204784, 109218, 72011, 53713 };
+int mov_flag;
+=======
+>>>>>>> 46990545948d2797b5fd02fe7272f93861e28e6b
 
 void task3ControlMotor(void)
 { 
