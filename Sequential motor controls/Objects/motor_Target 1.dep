@@ -1,5 +1,5 @@
 Dependencies for Project 'motor', Target 'Target 1': (DO NOT MODIFY !)
-F (.\src\main.c)(0x5A2FC8EA)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -Os -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I./RTE/Device/MKL25Z128xxx4-I./RTE/_Target_1-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.1.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/Kinetis_KLxx_DFP/1.13.0/Device/Include-D__UVISION_VERSION="524" -D_RTE_ -DMKL25Z128xxx4-o ./objects/main.o -MD)
+F (.\src\main.c)(0x5A310281)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -Os -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I./RTE/Device/MKL25Z128xxx4-I./RTE/_Target_1-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.1.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/Kinetis_KLxx_DFP/1.13.0/Device/Include-D__UVISION_VERSION="524" -D_RTE_ -DMKL25Z128xxx4-o ./objects/main.o -MD)
 I (C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.13.0\Device\Include\MKL25Z4.H)(0x585BDE7A)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x588D1242)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\core_cm0plus.h)(0x59847036)
@@ -7,12 +7,12 @@ I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_version.h)(0x59847036
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_compiler.h)(0x59847036)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_armclang.h)(0x59847036)
 I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x57FC649C)
-I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A2FC8EA)
-I (src\..\include\gpio_defs.h)(0x5A2FC8EA)
-I (src\..\include\stepperMotor.h)(0x5A2FC8EA)
+I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A300A40)
+I (src\..\include\gpio_defs.h)(0x5A310287)
+I (src\..\include\stepperMotor.h)(0x5A300A40)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x588D1242)
-I (src\..\include\SysTick.h)(0x5A2FC8EA)
-I (src\..\include\pit.h)(0x5A2FC8EA)
+I (src\..\include\SysTick.h)(0x5A300A40)
+I (src\..\include\pit.h)(0x5A300A40)
 F (.\src\SysTick.c)(0x5A2FC8EA)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -Os -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I./RTE/Device/MKL25Z128xxx4-I./RTE/_Target_1-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.1.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/Kinetis_KLxx_DFP/1.13.0/Device/Include-D__UVISION_VERSION="524" -D_RTE_ -DMKL25Z128xxx4-o ./objects/systick.o -MD)
 I (C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.13.0\Device\Include\MKL25Z4.H)(0x585BDE7A)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x588D1242)
@@ -21,7 +21,7 @@ I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_version.h)(0x59847036
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_compiler.h)(0x59847036)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_armclang.h)(0x59847036)
 I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x57FC649C)
-I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A2FC8EA)
+I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A300A40)
 F (.\src\stepperMotor.c)(0x5A2FC8EA)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -Os -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I./RTE/Device/MKL25Z128xxx4-I./RTE/_Target_1-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.1.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/Kinetis_KLxx_DFP/1.13.0/Device/Include-D__UVISION_VERSION="524" -D_RTE_ -DMKL25Z128xxx4-o ./objects/steppermotor.o -MD)
 I (C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.13.0\Device\Include\MKL25Z4.H)(0x585BDE7A)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x588D1242)
@@ -30,12 +30,12 @@ I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_version.h)(0x59847036
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_compiler.h)(0x59847036)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_armclang.h)(0x59847036)
 I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x57FC649C)
-I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A2FC8EA)
-I (src\..\include\gpio_defs.h)(0x5A2FC8EA)
-I (src\..\include\stepperMotor.h)(0x5A2FC8EA)
+I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A300A40)
+I (src\..\include\gpio_defs.h)(0x5A310287)
+I (src\..\include\stepperMotor.h)(0x5A300A40)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x588D1242)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x588D124A)
-F (.\src\PIT.c)(0x5A2FC8EA)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -Os -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I./RTE/Device/MKL25Z128xxx4-I./RTE/_Target_1-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.1.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/Kinetis_KLxx_DFP/1.13.0/Device/Include-D__UVISION_VERSION="524" -D_RTE_ -DMKL25Z128xxx4-o ./objects/pit.o -MD)
+F (.\src\PIT.c)(0x5A3007B9)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -Os -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I./RTE/Device/MKL25Z128xxx4-I./RTE/_Target_1-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.1.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/Kinetis_KLxx_DFP/1.13.0/Device/Include-D__UVISION_VERSION="524" -D_RTE_ -DMKL25Z128xxx4-o ./objects/pit.o -MD)
 I (C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.13.0\Device\Include\MKL25Z4.H)(0x585BDE7A)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x588D1242)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\core_cm0plus.h)(0x59847036)
@@ -43,12 +43,12 @@ I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_version.h)(0x59847036
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_compiler.h)(0x59847036)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_armclang.h)(0x59847036)
 I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x57FC649C)
-I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A2FC8EA)
-I (src\..\include\pit.h)(0x5A2FC8EA)
-I (src\..\include\gpio_defs.h)(0x5A2FC8EA)
-F (.\include\gpio.h)(0x5A2FC8EA)()
-F (RTE\Device\MKL25Z128xxx4\startup_MKL25Z4.s)(0x5A2FC8EA)(--cpu Cortex-M0+ -g-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.13.0\Device\Include--pd "__UVISION_VERSION SETA 524"--pd "_RTE_ SETA 1"--pd "MKL25Z128xxx4 SETA 1"--list .\listings\startup_mkl25z4.lst--xref -o .\objects\startup_mkl25z4.o--depend .\objects\startup_mkl25z4.d)
-F (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.c)(0x5A2FC8EA)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -Os -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I./RTE/Device/MKL25Z128xxx4-I./RTE/_Target_1-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.1.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/Kinetis_KLxx_DFP/1.13.0/Device/Include-D__UVISION_VERSION="524" -D_RTE_ -DMKL25Z128xxx4-o ./objects/system_mkl25z4.o -MD)
+I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A300A40)
+I (src\..\include\pit.h)(0x5A300A40)
+I (src\..\include\gpio_defs.h)(0x5A310287)
+F (.\include\gpio.h)(0x5A300A40)()
+F (RTE\Device\MKL25Z128xxx4\startup_MKL25Z4.s)(0x5A300A40)(--cpu Cortex-M0+ -g-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.13.0\Device\Include--pd "__UVISION_VERSION SETA 524"--pd "_RTE_ SETA 1"--pd "MKL25Z128xxx4 SETA 1"--list .\listings\startup_mkl25z4.lst--xref -o .\objects\startup_mkl25z4.o--depend .\objects\startup_mkl25z4.d)
+F (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.c)(0x5A300A40)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-3 -Os -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I./RTE/Device/MKL25Z128xxx4-I./RTE/_Target_1-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.1.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/Kinetis_KLxx_DFP/1.13.0/Device/Include-D__UVISION_VERSION="524" -D_RTE_ -DMKL25Z128xxx4-o ./objects/system_mkl25z4.o -MD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x588D1242)
 I (C:\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.13.0\Device\Include\MKL25Z4.h)(0x585BDE7A)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\core_cm0plus.h)(0x59847036)
@@ -56,5 +56,5 @@ I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_version.h)(0x59847036
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_compiler.h)(0x59847036)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.0\CMSIS\Include\cmsis_armclang.h)(0x59847036)
 I (C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x57FC649C)
-I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A2FC8EA)
-F (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A2FC8EA)()
+I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A300A40)
+F (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5A300A40)()

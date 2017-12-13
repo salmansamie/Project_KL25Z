@@ -10,8 +10,9 @@
 
 // Switches is on port D, pin 6
 #define BUTTON_POS (6)
-// Button is on port D, pin 7
-#define BUTTON_POS_2 (7)
+
+// Button is on port D, pin 0
+#define EXTRA_BUTTON_POS (0)
 
 // Outputs for stepper motor, on port E
 #define MOTOR_IN1 (30) // phase A+
