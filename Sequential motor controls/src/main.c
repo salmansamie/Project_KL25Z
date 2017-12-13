@@ -219,22 +219,25 @@ void task1PollInput(void)
 
 int sys_state = STATESTART;
 
-void task2ControlLight(void)
-{
-	switch (sys_state) {
-		case STATESTART :
-  			ledOn(GREEN_LED_POS) ;
-	  		ledOff(RED_LED_POS) ;
-			  break ;
-		  case STATERUNNING:
-		case STATESTOPPED:
-  			ledOn(RED_LED_POS) ;
-	  		ledOff(GREEN_LED_POS) ;
-			  break ;
-		case STATERETURN :
-  			ledOff(RED_LED_POS) ;
-	  		ledOff(GREEN_LED_POS) ;
-			  break;
+void greenOn(){
+	ledOn(GREEN_LED_POS) ;
+	ledOff(RED_LED_POS);
+}
+
+void RedOn(){
+	ledOn(RED_LED_POS) ;
+	ledOff(GREEN_LED_POS);
+}
+
+
+void task2ControlLight(void){
+	
+	if(isPressed()){
+		greenOn();
+	}
+	
+	else if(isPressed_extraButton_2()){
+		RedOn();
 	}
 }
 
@@ -295,7 +298,7 @@ void task3ControlMotor(void)
 			
 		  break ;
 			
-	  case STATERUNNING:			
+	  case STATERUNNING:
 				if (button2_pressed)
 				{
 					steps_calc = steps_counter;
@@ -329,7 +332,7 @@ void task3ControlMotor(void)
 				}
 				if (!motor_running)
 				{
-					sys_state = STATESTART ;
+					sys_state = STATESTART;
 					button2_pressed = false ; // acknowledge
 					mov_flag = 0;
 				}
