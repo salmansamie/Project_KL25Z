@@ -260,9 +260,13 @@ volatile int steps_calc ;
 volatile int steps_counter = 0; 
 int reset_flag = false;
 
-
+// Steps
 int mov_arr[8] = { 64, 272, 480, 976, 512, 960, 1456, 1952 };
+
+// rotation direction 0=clockwise, 1=anti-clockwise
 int mov_rot[8] = { 0, 0, 1, 1, 1, 1, 0, 0 };
+
+// PIT timer
 int mov_time[8] = { 3276562, 770955, 436874, 214856, 204784, 109218, 72011, 53713 };
 int mov_flag;
 
