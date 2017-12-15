@@ -91,58 +91,57 @@ int integer_value[8];
 
 //debounce and polling period for the external button
 void task1PollInput(){
+    if (bounceCounter > 0) bounceCounter -- ;
+    
+    switch (b_state) {
+        
+        //----------
+        case BUTTONOPEN :
+            if (isPressed(0)) {
+                pressed = 1 ;  				// create a 'pressed' event
+                b_state = BUTTONCLOSED ;
+                lcdHome(true) ;  			// reset cursor and shift
+                lcdCntrl(C_BLINK) ; 	// reset cursor
+                setLCDAddress(0,4);
+                writeLCDString(test);
+                setLCDAddress(2,0);
+                writeLCDString(final_value);
+            }
+            break ;
+        
+        //----------
+        case BUTTONCLOSED :
+            if (!isPressed(0)) {
+                b_state = BUTTONBOUNCE ;
+                bounceCounter = 20 ;
+            }
+            break ;
+        
+        //----------
+        case BUTTONBOUNCE :
+            if (isPressed(0)) {
+                b_state = BUTTONCLOSED ;
+            }
+            if (bounceCounter == 0) {
+                b_state = BUTTONOPEN ;
+            }
+            break ;
+	}   //EOF switch
+} //EOF task1PollInput()
 
-  if (bounceCounter > 0) bounceCounter -- ;    
-
-	switch (b_state) {
-        
-			case BUTTONOPEN :    
-					if (isPressed(0)) {
-									pressed = 1 ;  				// create a 'pressed' event
-									b_state = BUTTONCLOSED ;
-								
-									lcdHome(true) ;  			// reset cursor and shift
-									lcdCntrl(C_BLINK) ; 	// reset cursor
-									
-									setLCDAddress(0,4);
-									writeLCDString(test);
-									
-								
-								setLCDAddress(2,0);
-								writeLCDString(final_value);
-					}
-					break ;
-        
-			case BUTTONCLOSED :
-					if (!isPressed(0)) {
-							b_state = BUTTONBOUNCE ;
-							bounceCounter = 20 ;
-					}
-					break ;
-        
-			case BUTTONBOUNCE :
-           if (isPressed(0)) {
-               b_state = BUTTONCLOSED ;
-           }
-           if (bounceCounter == 0) {
-               b_state = BUTTONOPEN ;
-           }
-           break ;  
-	}	//EOF switch
-} //eof function
 
 
 void task2PollInput(uint32_t check_value)  {
     int i = 0;
-		while(check_value    < 3100){ //Open loop if button is pressed	
-				for (i = 0; i < 16; i++) { 
-						// measure the voltage
-						MeasureVoltage() ;
-						check_value = check_value + sres ;		
-				}
-				check_value = check_value >> 4 ; // take average
-				check_value = (1000 * check_value * VREF) / ADCRANGE ;																	
-		}
+	while (check_value < 3100) {        //Open loop if button is pressed
+        for (i = 0; i < 16; i++) {
+            // measure the voltage
+            MeasureVoltage() ;
+            check_value = check_value + sres ;
+        }
+        check_value = check_value >> 4 ; // take average
+		check_value = (1000 * check_value * VREF) / ADCRANGE ;
+    }
 }
 
 /*----------------------------------------------------------------------------
@@ -173,109 +172,108 @@ int decrement = 0;
 int store_inc_value[9];
 int store_dec_value[9];
 int button2presses = 0 ;
-    int i = 0 ;
-    int j = 0;
-    int stop = 0;
-    int value = 0;
-    float check;
-    uint32_t res = 0 ;
-    int count = 0;
+int i = 0 ;
+int j = 0;
+int stop = 0;
+int value = 0;
+float check;
+uint32_t res = 0 ;
+int count = 0;
     
-void task2MeasureKeypad() {    
-			int j =0;
-			
-			if (res<3100) {
-					for (j = 0; j < 16; j++){
-							MeasureVoltage() ;				// Pre-defined: measure the voltage
-							res = res + sres ;
-					}			
-					res = res >> 4 ; 							// takes average
-					res = (1000 * res * VREF) / ADCRANGE ;
+void task2MeasureKeypad() {
+    int j =0;
+    if (res<3100) {
+        for (j = 0; j < 16; j++){
+            MeasureVoltage() ;				        // From adc.c: measure the voltage
+            res = res + sres ;
+        }
+        res = res >> 4 ; 							// takes average
+        res = (1000 * res * VREF) / ADCRANGE ;
+        
+        //If no Button has been pressed, except the external button
+        if(stop == 0){
+            writeLCDString(statement);
+            setLCDAddress(2,0);
+            stop = 1;
+        }
+        
+        //If the left button is pressed, else if statement is executed
+        else if((2200 < res) && (res <2416)) {
+            if (count>0) {
+                cursorShift(D_Left);
+                store_inc_value[count] = inc_value;
+                final_value[count] = integer_value[count] + '0';
+                count--;
+                inc_value = integer_value[count];
+                decrement = integer_value[count];
+                testChar = integer_value[count] + '0';
+                task2PollInput(res);
+            }
+        }
+        
+        //If the up button has been pressed the else if statement is executed
+        else if ((504<res) && (res<740)) {
+            if ((inc_value>=0) && (inc_value<9)) {
+                testChar++;
+                integer_value[count] = testChar - '0';
+                writeLCDChar(testChar);
+                cursorShift(D_Left);
+                inc_value++;
+                task2PollInput(res);
+            }
+            else {
+                inc_value = 0;
+                testChar = '0';
+                integer_value[count] = testChar - '0';
+                writeLCDChar(testChar);
+                cursorShift(D_Left);
+                task2PollInput(res);
+            }
+        }
+        
+        //If the down button has been pressed the else if statement is executed
+        else if((1370<res) && (res<1585)){
+            if (((decrement>0) && (decrement<10))) {
+                testChar--;
+                decrement--;
+                integer_value[count] = testChar - '0';
+                writeLCDChar(testChar);
+                cursorShift(D_Left);
+                task2PollInput(res);
+            }
+            else {
+                decrement = 9;
+                testChar = '9';
+                integer_value[count] = testChar - '0';
+                writeLCDChar(testChar);
+                cursorShift(D_Left);
+                task2PollInput(res);
+            }
+        }
 
-					//If no Button has been pressed, except the external button
-					if(stop == 0){
-							writeLCDString(statement);
-							setLCDAddress(2,0);
-							stop = 1;
-					}
-					
-					//If the left button is pressed, else if statement is executed
-					else if((2200<res) && (res <2416)){
-							if(count>0){
-									cursorShift(D_Left);
-									store_inc_value[count] = inc_value;
-									final_value[count] = integer_value[count] + '0';
-									count--;
-									inc_value = integer_value[count];
-									decrement = integer_value[count];
-									testChar = integer_value[count] + '0';
-									task2PollInput(res);
-							}
-					}
-					
-					//If the up button has been pressed the else if statement is executed
-					else if((504<res) && (res<740)){
-							if((inc_value>=0) && (inc_value<9)){
-									testChar++;                        
-									integer_value[count] = testChar - '0';
-									writeLCDChar(testChar);
-									cursorShift(D_Left);
-									inc_value++;
-									task2PollInput(res);
-							}
-							else{
-									inc_value = 0;
-									testChar = '0';
-									integer_value[count] = testChar - '0';
-									writeLCDChar(testChar);
-									cursorShift(D_Left);
-									task2PollInput(res);
-							}
-					}
-									
-					//If the down button has been pressed the else if statement is executed
-					else if((1370<res) && (res<1585)){
-							if(((decrement>0) && (decrement<10)) ){
-									testChar--;
-									decrement--;
-									integer_value[count] = testChar - '0';
-									writeLCDChar(testChar);
-									cursorShift(D_Left);
-									task2PollInput(res);
-							}
-							else{
-									decrement = 9;
-									testChar = '9';
-									integer_value[count] = testChar - '0';
-									writeLCDChar(testChar);
-									cursorShift(D_Left);
-									task2PollInput(res);
-							}
-					}
-
-					//If the right button has been pressed the else if statement is executed
-					else if(res<0015){    
-							if(count<8){
-									cursorShift(D_Right);
-									final_value[count] = integer_value[count] + '0';
-									count++;
-									inc_value = integer_value[count];
-									decrement = integer_value[count];
-									testChar = integer_value[count] + '0';
-									task2PollInput(res);
-							}
-					}				
-					button2presses = button2presses + 1 ;	
-			} //eof big if
-
-			for (i = 0; i < 16; i++) { 
-					// measure the voltage
-					MeasureVoltage() ;
-					res = res + sres ;		
-			}
-			res = res >> 4 ; // take average
-			res = (1000 * res * VREF) / ADCRANGE ;
-}		//END OF task2MeasureKeypad()
+        //If the right button has been pressed the else if statement is executed
+        else if (res<0015) {
+            if (count<8) {
+                cursorShift(D_Right);
+                final_value[count] = integer_value[count] + '0';
+                count++;
+                inc_value = integer_value[count];
+                decrement = integer_value[count];
+                testChar = integer_value[count] + '0';
+                task2PollInput(res);
+            }
+        }
+        button2presses = button2presses + 1 ;
+        
+    }   //EOF OUTER IF Statement
+    for (i = 0; i < 16; i++) {
+        // measure the voltage
+        MeasureVoltage() ;
+        res = res + sres ;
+    }
+    res = res >> 4 ;                        // takes average
+    res = (1000 * res * VREF) / ADCRANGE ;
+}   //END OF task2MeasureKeypad()
 
 
 /*----------------------------------------------------------------------------
@@ -290,7 +288,7 @@ int main (void) {
     configureGPIOinput() ;
     Init_SysTick(1000) ; 
     initLCD() ;
-		Init_ADC() ;
+	Init_ADC() ;
     calibrationFailed = ADC_Cal(ADC0) ; // calibrate the ADC 
     while (calibrationFailed) 
         ; // block progress if calibration failed
