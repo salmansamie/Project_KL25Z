@@ -92,18 +92,18 @@ motorType mcb ;   // motor control block
 MotorId m1 ;      // motor id
 
 void configureMotor() {
-	m1 = & mcb ;
+    m1 = & mcb ;
 	m1->port = PTE ;
-  m1->bitAp = MOTOR_IN1 ;
-  m1->bitAm = MOTOR_IN2 ;
-  m1->bitBp = MOTOR_IN3 ;
-  m1->bitBm = MOTOR_IN4 ;
+    m1->bitAp = MOTOR_IN1 ;
+    m1->bitAm = MOTOR_IN2 ;
+    m1->bitBp = MOTOR_IN3 ;
+    m1->bitBm = MOTOR_IN4 ;
 
 	// Enable clock to port E
 	SIM->SCGC5 |=  SIM_SCGC5_PORTE_MASK; /* enable clock for port E */
 	
 	// Initialise motor data and set to state 1
-  initMotor(m1) ; // motor initially stopped, with step 1 powered
+    initMotor(m1) ; // motor initially stopped, with step 1 powered
 }
 
 /*----------------------------------------------------------------------------
@@ -111,23 +111,22 @@ void configureMotor() {
 
   Note use of the clear register (c.f. the data output)
  *----------------------------------------------------------------------------*/	
-void ledOn(int pos)
-{
-	   // set led on without changing anything else
-	   // LED is actve low
-		 PTB->PCOR |= MASK(pos) ;
+void ledOn(int pos) {
+    // set led on without changing anything else
+    // LED is actve low
+    PTB->PCOR |= MASK(pos) ;
 }
+
 
 /*----------------------------------------------------------------------------
   ledOff: Set LED off, assumes port B
 
   Note use of the clear register (c.f. the data output)
  *----------------------------------------------------------------------------*/
-void ledOff(int pos)
-{
-	   // set led off with changing anything else
-	   // LED is actve low
-		 PTB->PSOR |= MASK(pos) ;
+void ledOff(int pos) {
+    // set led off with changing anything else
+	// LED is actve low
+	PTB->PSOR |= MASK(pos) ;
 }
 
 /*----------------------------------------------------------------------------
@@ -185,19 +184,21 @@ void task1PollInput(void) {
 				b_state = BUTTONCLOSED ;
 			}
             break ;
-		
+            
+		//BUTTONCLOSED
         case BUTTONCLOSED :
 			if (!isPressed() || !isPressed_extraButton_2()) {
 				b_state = BUTTONBOUNCE ;
 				bounceCounter = 50 ;
 			}
 			break ;
-		
+            
+		//BUTTONBOUNCE
         case BUTTONBOUNCE :
 			if (isPressed() || isPressed_extraButton_2()) {
 				b_state = BUTTONCLOSED ;
 			}
-			if (bounceCounter == 0) {
+			else if (bounceCounter == 0) {
 				b_state = BUTTONOPEN ;
 			}
 			break ;
@@ -219,12 +220,12 @@ void task1PollInput(void) {
 
 int sys_state = STATESTART;
 
-void greenOn(){
+void greenOn() {
 	ledOn(GREEN_LED_POS) ;
 	ledOff(RED_LED_POS);
 }
 
-void RedOn(){
+void RedOn() {
 	ledOn(RED_LED_POS) ;
 	ledOff(GREEN_LED_POS);
 }
@@ -232,11 +233,11 @@ void RedOn(){
 
 void task2ControlLight(void){
 	
-	if(isPressed()){
+	if (isPressed()){
 		greenOn();
 	}
 	
-	else if(isPressed_extraButton_2()){
+	else if (isPressed_extraButton_2()){
 		RedOn();
 	}
 }
@@ -273,9 +274,10 @@ int mov_rot[8] = { 0, 0, 1, 1, 1, 1, 0, 0 };
 int mov_time[8] = { 3276562, 770955, 436874, 214856, 204784, 109218, 72011, 53713 };
 int mov_flag;
 
-void task3ControlMotor(void)
-{ 
+void task3ControlMotor(void) {
+    
 	switch (sys_state) {
+            
         case STATESTART :
             if (pressed && !motor_running) {
                 pressed = false ; // acknowledge
