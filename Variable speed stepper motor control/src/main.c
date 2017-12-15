@@ -166,34 +166,34 @@ int button2_pressed = 0;
 int position = 0;
 bool motor_running = false;
 
-void task1PollInput(void)
-{
-	if (bounceCounter > 0) bounceCounter -- ;
+void task1PollInput(void) {
+    if (bounceCounter > 0) bounceCounter -- ;
 	
 	switch (b_state) {
-		case BUTTONOPEN :
+		
+        //BUTTONOPEN
+        case BUTTONOPEN :
 			if (isPressed() && !motor_running) {
-				pressed = 1 ;  // create a 'pressed' event
+				pressed = 1 ;                   // create a 'pressed' event
 				b_state = BUTTONCLOSED ;
-				if (position > 7)
-				{
+				if (position > 7) {
 					position = 0;
 				}
-			}
-			else if (isPressed_extraButton_2())
-			{
-				button2_pressed = 1;
+            }
+            else if (isPressed_extraButton_2()) {
+                button2_pressed = 1;
 				b_state = BUTTONCLOSED ;
 			}
-			
-			break ;
-		case BUTTONCLOSED :
+            break ;
+		
+        case BUTTONCLOSED :
 			if (!isPressed() || !isPressed_extraButton_2()) {
 				b_state = BUTTONBOUNCE ;
 				bounceCounter = 50 ;
 			}
 			break ;
-		case BUTTONBOUNCE :
+		
+        case BUTTONBOUNCE :
 			if (isPressed() || isPressed_extraButton_2()) {
 				b_state = BUTTONCLOSED ;
 			}
@@ -201,7 +201,7 @@ void task1PollInput(void)
 				b_state = BUTTONOPEN ;
 			}
 			break ;
-	}
+    }
 }
 
 
@@ -276,9 +276,9 @@ int mov_flag;
 void task3ControlMotor(void)
 { 
 	switch (sys_state) {
-    case STATESTART :
-			if (pressed && !motor_running) {
-				pressed = false ; // acknowledge
+        case STATESTART :
+            if (pressed && !motor_running) {
+                pressed = false ; // acknowledge
 				moveSteps(m1, mov_arr[position], mov_rot[position]) ; // set number of steps, set direction of turn
 				setTimer(0, mov_time[position]) ; //set timing period for move
 				position++;
@@ -286,60 +286,54 @@ void task3ControlMotor(void)
 				button2_pressed = false; //if restart button pressed before start button, then reset state.
 				
 			}
-			else if (button2_pressed && motor_running)//stop motor if running and restart button is pressed
-			{
-				stopMotor(m1) ;
+            
+            //stop motor if running and restart button is pressed
+			else if (button2_pressed && motor_running) {
+                stopMotor(m1) ;
 				button2_pressed = false;
 			}
-			else if(button2_pressed && !motor_running && mov_flag)//if the motor has stopped moving and the restart button is pressed, restart motor to start position
-			{
-					sys_state = STATERUNNING ;
+            
+            //if the motor has stopped moving and the restart button is pressed, restart motor to start position
+			else if (button2_pressed && !motor_running && mov_flag) {
+                sys_state = STATERUNNING ;
 			}
-			
-		  break ;
-			
-	  case STATERUNNING:
-				if (button2_pressed)
-				{
-					steps_calc = steps_counter;
-					steps_calc = steps_counter % 48;
-					if (steps_calc > 24 )
-					{
-						steps_calc = 48-steps_calc;
-						if (mov_rot[position - 1] == true)	//check to see if it goes counter clockwise. Reverse conditions for this.
-						{
-							moveSteps(m1, steps_calc, true /*mov_rot[position]*/) ; 
-						}
-						else
-						{
-							moveSteps(m1, steps_calc, false /*mov_rot[position]*/) ; 
-						}
-						reset_flag = true;
-					}
-				
-					else
-					{
-						if (mov_rot[position - 1] == true)
-						{
-							moveSteps(m1, steps_calc, false /*mov_rot[position]*/) ; 
-						}
-						else
-						{
-							moveSteps(m1, steps_calc, true /*!mov_rot[position]*/) ; 
-						}
-						reset_flag = true;
-					}
-				}
-				if (!motor_running)
-				{
-					sys_state = STATESTART;
-					button2_pressed = false ; // acknowledge
-					mov_flag = 0;
-				}
-		  break;
-	
-			
-	}
+            break ;
+    
+        case STATERUNNING:
+            if (button2_pressed) {
+                steps_calc = steps_counter;
+                steps_calc = steps_counter % 48;
+                if (steps_calc > 24 ) {
+                    steps_calc = 48-steps_calc;
+                    
+                    //check to see if it goes counter clockwise. Reverse conditions for this.
+                    if (mov_rot[position - 1] == true) {
+                        moveSteps(m1, steps_calc, true /*mov_rot[position]*/) ;
+                    }
+                    else {
+                        moveSteps(m1, steps_calc, false /*mov_rot[position]*/) ;
+                    }
+                    reset_flag = true;
+                }
+                
+                else {
+                    if (mov_rot[position - 1] == true) {
+                        moveSteps(m1, steps_calc, false /*mov_rot[position]*/) ;
+                    }
+                    else {
+                        moveSteps(m1, steps_calc, true /*!mov_rot[position]*/) ;
+                    }
+                    reset_flag = true;
+                }
+            }
+            
+            if (!motor_running) {
+                sys_state = STATESTART;
+                button2_pressed = false ; // acknowledge
+                mov_flag = 0;
+            }
+            break;
+    }
 }
 
 /* --------------------------------------
